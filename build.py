@@ -18,6 +18,7 @@ CONFIG = {
     
     # Bước 2: Danh sách ảnh trình chiếu (thêm bao nhiêu ảnh tùy thích)
     "photos": [
+        "diep.jpg",
         "IMG_0336.jpg",
         "IMG_0371.jpg",
         "IMG_0913.jpg",

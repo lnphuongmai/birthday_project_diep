@@ -283,7 +283,8 @@
       
       <div class="slider-container">
         <div class="photo-frame">
-          <img src="IMG_0336.jpg" alt="Kỷ niệm" class="photo-slide active">
+          <img src="diep.jpg" alt="Kỷ niệm" class="photo-slide active">
+          <img src="IMG_0336.jpg" alt="Kỷ niệm" class="photo-slide ">
           <img src="IMG_0371.jpg" alt="Kỷ niệm" class="photo-slide ">
           <img src="IMG_0913.jpg" alt="Kỷ niệm" class="photo-slide ">
           <img src="IMG_4685.jpg" alt="Kỷ niệm" class="photo-slide ">
@@ -301,7 +302,7 @@
         </div>
 
         <div class="slider-meta">
-          <div class="photo-counter" id="photo-counter">1 / 13</div>
+          <div class="photo-counter" id="photo-counter">1 / 14</div>
           <div class="dots-container" id="dots-container">
             <span class="dot active" onclick="goToSlide(0)"></span>
             <span class="dot " onclick="goToSlide(1)"></span>
@@ -316,6 +317,7 @@
             <span class="dot " onclick="goToSlide(10)"></span>
             <span class="dot " onclick="goToSlide(11)"></span>
             <span class="dot " onclick="goToSlide(12)"></span>
+            <span class="dot " onclick="goToSlide(13)"></span>
           </div>
         </div>
       </div>
@@ -327,7 +329,7 @@
     <div class="step" id="step-3">
       <h2>Clip Dành Riêng Cho Bạn 🎬</h2>
       <div class="video-wrapper">
-        <video id="birthday-video" controls poster="IMG_0336.jpg">
+        <video id="birthday-video" controls poster="diep.jpg">
           <source src="video.mp4" type="video/mp4">
         </video>
       </div>
@@ -349,7 +351,7 @@
     const msgStep1 = "HAPPY BIRTHDAY TO YOUUUUUU! 🎂✨\n\nNhân dịp sinh nhật cậu, chúng tớ có một món quà tinh thần nho nhỏ gửi tới cậu:)\nHy vọng nó sẽ là một sinh nhật ý nghĩa với cậu. Cùng ôn lại một chút kỉ niệm nhé...";
     const msgStep4 = "Chúc cậu tuổi mới có thật nhiều sức khỏe, mọi sự đều hanh thông, học tập và công việc luôn đạt được thành tích tốt nhất. Hãy luôn nỗ lực, sống hết mình với tuổi trẻ. Chúc cậu chân cứng đá mềm để vượt qua mọi thử thách của cuộc sống. Hy vọng mọi điều tốt đẹp sẽ đến với cậu... 🎉🥳Cảm ơn vì đã đến, đã là bạn, đã đồng hành, cùng sẻ chia, cùng vun đắp...";
     const typingSpeed = 35;
-    const totalPhotos = 13;
+    const totalPhotos = 14;
     let currentPhotoIndex = 0;
     
     const audio = document.getElementById('birthday-song');
