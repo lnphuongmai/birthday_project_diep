@@ -316,7 +316,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     <div class="step active" id="step-intro">
       <h2>Happy Birthday! 🎂✨</h2>
       <p style="color: #64748b; font-size: 1.15rem; margin-bottom: 28px;">Có một món quà đặc biệt đang đợi bạn...</p>
-      <button class="btn-action" onclick="startGift()">🎁 Bắt đầu mở quà</button>
+      <button class="btn-action" onclick="startGift()">🎁 Cùng mở quà nào</button>
     </div>
 
     <!-- BƯỚC 1: LỜI CHÚC MỞ ĐẦU -->
@@ -325,12 +325,12 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       <div class="message-box">
         <span id="text-step1"></span><span class="cursor" id="cursor-1"></span>
       </div>
-      <button class="btn-action" onclick="goToStep(2)">Xem lại kỷ niệm ➡️</button>
+      <button class="btn-action" onclick="goToStep(2)">Mình bắt đầu nhé ➡️</button>
     </div>
 
     <!-- BƯỚC 2: KHUNG ẢNH TRÌNH CHIẾU -->
     <div class="step" id="step-2">
-      <h2>Khoảnh Khắc Kỷ Niệm 📸</h2>
+      <h2>Điều Gì Đang Diễn Ra Vậy... 📸</h2>
       
       <div class="slider-container">
         <div class="photo-frame">
@@ -347,12 +347,12 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         </div>
       </div>
 
-      <button class="btn-action" onclick="goToStep(3)">Còn một điều bất ngờ nữa ➡️</button>
+      <button class="btn-action" onclick="goToStep(3)">Cái gì đang nằm ở phía sau vậy??? ➡️</button>
     </div>
 
     <!-- BƯỚC 3: VIDEO -->
     <div class="step" id="step-3">
-      <h2>Clip Dành Riêng Cho Bạn 🎬</h2>
+      <h2>It's for you 🎬</h2>
       <div class="video-wrapper">
         <video id="birthday-video" controls poster="{first_photo}">
           <source src="{video_path}" type="video/mp4">
@@ -367,7 +367,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       <div class="message-box">
         <span id="text-step4"></span><span class="cursor" id="cursor-4"></span>
       </div>
-      <button class="btn-action" onclick="shootConfetti()">🎉 Bắn thêm pháo giấy!</button>
+      <button class="btn-action" onclick="shootConfetti()">🎉 Pháo giấy!</button>
     </div>
 
   </div>
