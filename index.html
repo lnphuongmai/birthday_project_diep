@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday! 🎉</title>
+  
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <style>
+    :root {
+      --pastel-bg: #dcedf7;
+      --card-bg: rgba(255, 255, 255, 0.90);
+      --primary-blue: #6ca0dc;
+      --deep-blue: #3d70a3;
+      --text-color: #2c3e50;
+      --border-color: rgba(255, 255, 255, 0.85);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #e0f2fe 0%, #dcedf7 50%, #cce3f5 100%);
+      color: var(--text-color);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 30px 16px;
+    }
+
+    /* KHUNG CHÍNH */
+    .container {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      border-radius: 28px;
+      max-width: 820px;
+      width: 100%;
+      padding: 45px 36px;
+      text-align: center;
+      box-shadow: 0 20px 45px rgba(108, 160, 220, 0.25);
+      border: 1px solid var(--border-color);
+      position: relative;
+    }
+
+    /* NÚT BẤM */
+    .btn-action {
+      background-color: var(--primary-blue);
+      color: #ffffff;
+      border: none;
+      padding: 14px 32px;
+      font-size: 1.08rem;
+      font-weight: 600;
+      border-radius: 99px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 6px 18px rgba(108, 160, 220, 0.35);
+      margin-top: 22px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-action:hover {
+      background-color: var(--deep-blue);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(61, 112, 163, 0.4);
+    }
+
+    /* TỪNG BƯỚC */
+    .step {
+      display: none;
+      animation: fadeIn 0.65s ease-in-out forwards;
+    }
+
+    .step.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      color: var(--deep-blue);
+      font-size: 2.1rem;
+      margin-bottom: 20px;
+    }
+
+    /* HỘP LỜI CHÚC */
+    .message-box {
+      background: rgba(255, 255, 255, 0.98);
+      border-radius: 20px;
+      padding: 28px 30px;
+      margin: 10px auto;
+      text-align: left;
+      border: 1px solid #d3e5f5;
+      font-size: 1.12rem;
+      line-height: 1.85;
+      color: #34495e;
+      white-space: pre-wrap;
+      min-height: 140px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 2.5px;
+      height: 1.2em;
+      background-color: var(--deep-blue);
+      vertical-align: sub;
+      animation: blink 0.75s step-end infinite;
+      margin-left: 2px;
+    }
+
+    @keyframes blink {
+      from, to { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    /* KHUNG TRÌNH CHIẾU ẢNH */
+    .slider-container {
+      position: relative;
+      max-width: 620px;
+      margin: 10px auto 16px auto;
+    }
+
+    .photo-frame {
+      position: relative;
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
+      background: #ffffff;
+      aspect-ratio: 4 / 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .photo-slide {
+      display: none;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      animation: photoFade 0.5s ease-in-out;
+    }
+
+    .photo-slide.active {
+      display: block;
+    }
+
+    @keyframes photoFade {
+      from { opacity: 0.4; transform: scale(1.02); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* NÚT CHUYỂN ẢNH */
+    .nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.88);
+      color: var(--deep-blue);
+      border: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+      z-index: 5;
+    }
+
+    .nav-btn:hover {
+      background: #ffffff;
+      transform: translateY(-50%) scale(1.1);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+    }
+
+    .nav-btn.prev { left: 14px; }
+    .nav-btn.next { right: 14px; }
+
+    .slider-meta {
+      margin-top: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .photo-counter {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--deep-blue);
+      background: #eaf4fb;
+      padding: 4px 12px;
+      border-radius: 99px;
+    }
+
+    .dots-container {
+      display: flex;
+      gap: 8px;
+    }
+
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #c3dcf2;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .dot.active {
+      background: var(--primary-blue);
+      transform: scale(1.3);
+      width: 18px;
+      border-radius: 99px;
+    }
+
+    /* VIDEO RỘNG */
+    .video-wrapper {
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+      margin: 12px auto;
+      background: #000;
+      max-width: 680px;
+    }
+
+    video {
+      width: 100%;
+      max-height: 420px;
+      display: block;
+      border-radius: 20px;
+    }
+
+    /* ẨN AUDIO HOÀN TOÀN */
+    #birthday-song {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Audio phát ngầm -->
+  <audio id="birthday-song" loop preload="auto">
+    <source src="music.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="container">
+    
+    <!-- MÀN HÌNH MỞ ĐẦU -->
+    <div class="step active" id="step-intro">
+      <h2>Happy Birthday! 🎂✨</h2>
+      <p style="color: #64748b; font-size: 1.15rem; margin-bottom: 28px;">Có một món quà đặc biệt đang đợi bạn...</p>
+      <button class="btn-action" onclick="startGift()">🎁 Bắt đầu mở quà</button>
+    </div>
+
+    <!-- BƯỚC 1: LỜI CHÚC MỞ ĐẦU -->
+    <div class="step" id="step-1">
+      <h2>To: Bùi Ngọc Diệp... 💌</h2>
+      <div class="message-box">
+        <span id="text-step1"></span><span class="cursor" id="cursor-1"></span>
+      </div>
+      <button class="btn-action" onclick="goToStep(2)">Xem lại kỷ niệm ➡️</button>
+    </div>
+
+    <!-- BƯỚC 2: KHUNG ẢNH TRÌNH CHIẾU -->
+    <div class="step" id="step-2">
+      <h2>Khoảnh Khắc Kỷ Niệm 📸</h2>
+      
+      <div class="slider-container">
+        <div class="photo-frame">
+          <img src="IMG_0336.jpg" alt="Kỷ niệm" class="photo-slide active">
+          <img src="IMG_0371.jpg" alt="Kỷ niệm" class="photo-slide ">
+          <img src="IMG_0913.jpg" alt="Kỷ niệm" class="photo-slide ">
+          <img src="IMG_4685.jpg" alt="Kỷ niệm" class="photo-slide ">
+          <img src="IMG_5552.jpg" alt="Kỷ niệm" class="photo-slide ">
+          <img src="IMG_9866.jpg" alt="Kỷ niệm" class="photo-slide ">
+          <img src="IMG_9868.jpg" alt="Kỷ niệm" class="photo-slide ">
+          <img src="IMG_9959.jpg" alt="Kỷ niệm" class="photo-slide ">
+          <img src="IMG_9960.jpg" alt="Kỷ niệm" class="photo-slide ">
+          <img src="IMG_8443.jpg" alt="Kỷ niệm" class="photo-slide ">
+          <img src="IMG_9280.jpg" alt="Kỷ niệm" class="photo-slide ">
+          <img src="IMG_9852.jpg" alt="Kỷ niệm" class="photo-slide ">
+          <img src="photo1.jpg" alt="Kỷ niệm" class="photo-slide ">
+          <button class="nav-btn prev" onclick="changeSlide(-1)" title="Ảnh trước">‹</button>
+          <button class="nav-btn next" onclick="changeSlide(1)" title="Ảnh tiếp theo">›</button>
+        </div>
+
+        <div class="slider-meta">
+          <div class="photo-counter" id="photo-counter">1 / 13</div>
+          <div class="dots-container" id="dots-container">
+            <span class="dot active" onclick="goToSlide(0)"></span>
+            <span class="dot " onclick="goToSlide(1)"></span>
+            <span class="dot " onclick="goToSlide(2)"></span>
+            <span class="dot " onclick="goToSlide(3)"></span>
+            <span class="dot " onclick="goToSlide(4)"></span>
+            <span class="dot " onclick="goToSlide(5)"></span>
+            <span class="dot " onclick="goToSlide(6)"></span>
+            <span class="dot " onclick="goToSlide(7)"></span>
+            <span class="dot " onclick="goToSlide(8)"></span>
+            <span class="dot " onclick="goToSlide(9)"></span>
+            <span class="dot " onclick="goToSlide(10)"></span>
+            <span class="dot " onclick="goToSlide(11)"></span>
+            <span class="dot " onclick="goToSlide(12)"></span>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-action" onclick="goToStep(3)">Còn một điều bất ngờ nữa ➡️</button>
+    </div>
+
+    <!-- BƯỚC 3: VIDEO -->
+    <div class="step" id="step-3">
+      <h2>Clip Dành Riêng Cho Bạn 🎬</h2>
+      <div class="video-wrapper">
+        <video id="birthday-video" controls poster="IMG_0336.jpg">
+          <source src="video.mp4" type="video/mp4">
+        </video>
+      </div>
+      <button class="btn-action" onclick="goToStep(4)">Lời nhắn cuối gửi bạn ❤️</button>
+    </div>
+
+    <!-- BƯỚC 4: LỜI CHÚC KẾT MÀN -->
+    <div class="step" id="step-4">
+      <h2>Tuổi Mới Thật Rực Rỡ Và Sống Hết Mình Nhé! 🌟</h2>
+      <div class="message-box">
+        <span id="text-step4"></span><span class="cursor" id="cursor-4"></span>
+      </div>
+      <button class="btn-action" onclick="shootConfetti()">🎉 Bắn thêm pháo giấy!</button>
+    </div>
+
+  </div>
+
+  <script>
+    const msgStep1 = "HAPPY BIRTHDAY TO YOUUUUUU! 🎂✨\n\nNhân dịp sinh nhật cậu, chúng tớ có một món quà tinh thần nho nhỏ gửi tới cậu:)\nHy vọng nó sẽ là một sinh nhật ý nghĩa với cậu. Cùng ôn lại một chút kỉ niệm nhé...";
+    const msgStep4 = "Chúc cậu tuổi mới có thật nhiều sức khỏe, mọi sự đều hanh thông, học tập và công việc luôn đạt được thành tích tốt nhất. Hãy luôn nỗ lực, sống hết mình với tuổi trẻ. Chúc cậu chân cứng đá mềm để vượt qua mọi thử thách của cuộc sống. Hy vọng mọi điều tốt đẹp sẽ đến với cậu... 🎉🥳Cảm ơn vì đã đến, đã là bạn, đã đồng hành, cùng sẻ chia, cùng vun đắp...";
+    const typingSpeed = 35;
+    const totalPhotos = 13;
+    let currentPhotoIndex = 0;
+    
+    const audio = document.getElementById('birthday-song');
+    const video = document.getElementById('birthday-video');
+
+    // ==========================================
+    // AUDIO DUCKING: GIẢM ÂM LƯỢNG MƯỢT MÀ KHI PHÁT VIDEO
+    // ==========================================
+    let fadeInterval = null;
+
+    function fadeAudioTo(targetVolume, duration = 400) {
+      if (!audio) return;
+      clearInterval(fadeInterval);
+      const stepTime = 40;
+      const steps = duration / stepTime;
+      const volumeStep = (targetVolume - audio.volume) / steps;
+
+      fadeInterval = setInterval(() => {
+        let nextVol = audio.volume + volumeStep;
+        if ((volumeStep > 0 && nextVol >= targetVolume) || (volumeStep < 0 && nextVol <= targetVolume)) {
+          audio.volume = targetVolume;
+          clearInterval(fadeInterval);
+        } else {
+          audio.volume = Math.max(0, Math.min(1, nextVol));
+        }
+      }, stepTime);
+    }
+
+    // Khi video bắt đầu chạy: giảm nhạc nền xuống mức 15% (0.15)
+    video.addEventListener('play', () => {
+      fadeAudioTo(0.15, 500);
+    });
+
+    // Khi video bấm tạm dừng: tăng nhạc nền trở lại 100% (1.0)
+    video.addEventListener('pause', () => {
+      fadeAudioTo(1.0, 500);
+    });
+
+    // Khi video chạy hết: tăng nhạc nền trở lại 100% (1.0)
+    video.addEventListener('ended', () => {
+      fadeAudioTo(1.0, 500);
+    });
+
+    // Cố gắng phát nhạc ngầm
+    function tryPlayMusic() {
+      if (audio && audio.paused) {
+        audio.play().catch(() => {
+          const enableAudio = () => {
+            audio.play();
+            window.removeEventListener('click', enableAudio);
+            window.removeEventListener('touchstart', enableAudio);
+          };
+          window.addEventListener('click', enableAudio, { once: true });
+          window.addEventListener('touchstart', enableAudio, { once: true });
+        });
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', tryPlayMusic);
+    window.addEventListener('load', tryPlayMusic);
+
+    function shootConfetti() {
+      confetti({
+        particleCount: 85,
+        spread: 80,
+        origin: { y: 0.6 },
+        colors: ['#6ca0dc', '#a0c4ff', '#e0f2fe', '#ffd1dc']
+      });
+    }
+
+    function typeEffect(text, elementId, cursorId, callback) {
+      let index = 0;
+      const elem = document.getElementById(elementId);
+      const cursor = document.getElementById(cursorId);
+      elem.textContent = "";
+      if (cursor) cursor.style.display = "inline-block";
+
+      function type() {
+        if (index < text.length) {
+          elem.textContent += text.charAt(index);
+          index++;
+          setTimeout(type, typingSpeed);
+        } else {
+          if (cursor) {
+            setTimeout(() => cursor.style.display = "none", 1800);
+          }
+          if (callback) callback();
+        }
+      }
+      type();
+    }
+
+    function startGift() {
+      tryPlayMusic();
+      shootConfetti();
+      goToStep(1);
+    }
+
+    function changeSlide(direction) {
+      showSlide(currentPhotoIndex + direction);
+    }
+
+    function goToSlide(index) {
+      showSlide(index);
+    }
+
+    function showSlide(index) {
+      const slides = document.querySelectorAll('.photo-slide');
+      const dots = document.querySelectorAll('.dot');
+      const counter = document.getElementById('photo-counter');
+
+      if (!slides.length) return;
+
+      if (index >= slides.length) index = 0;
+      if (index < 0) index = slides.length - 1;
+
+      currentPhotoIndex = index;
+
+      slides.forEach(s => s.classList.remove('active'));
+      dots.forEach(d => d.classList.remove('active'));
+
+      slides[currentPhotoIndex].classList.add('active');
+      if (dots[currentPhotoIndex]) {
+        dots[currentPhotoIndex].classList.add('active');
+      }
+      if (counter) {
+        counter.textContent = `${currentPhotoIndex + 1} / ${slides.length}`;
+      }
+    }
+
+    function goToStep(stepNumber) {
+      document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+
+      // Nếu rời khỏi bước 3, dừng video và trả lại âm lượng nhạc đầy đủ
+      if (video && stepNumber !== 3) {
+        video.pause();
+        fadeAudioTo(1.0, 300);
+      }
+
+      const targetStep = document.getElementById(`step-${stepNumber}`);
+      if (targetStep) {
+        targetStep.classList.add('active');
+      }
+
+      if (stepNumber === 1) {
+        typeEffect(msgStep1, "text-step1", "cursor-1");
+      } else if (stepNumber === 2) {
+        shootConfetti();
+        showSlide(0);
+      } else if (stepNumber === 4) {
+        shootConfetti();
+        typeEffect(msgStep4, "text-step4", "cursor-4");
+      }
+    }
+  </script>
+</body>
+</html>

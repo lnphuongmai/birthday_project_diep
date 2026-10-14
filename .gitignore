@@ -1,0 +1,22 @@
+# Môi trường ảo Python & cache
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+
+# Cấu hình IDE / Editor
+.vscode/
+.idea/
+*.swp
+
+# Thư mục hệ thống & file tạm
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# File ảnh gốc HEIC và thư mục convert tạm (không cần đẩy lên web)
+*.heic
+*.HEIC
+output_jpg/
